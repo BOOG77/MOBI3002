@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -20,12 +21,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Action when "Add" button is pressed
-        Button addButton = (Button) findViewById(R.id.b_Add);
+        ImageButton addButton = (ImageButton) findViewById(R.id.addImageButton);
+        //Button addButton = (Button) findViewById(R.id.b_Add);
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("M01_Calculator ADD BUTTON", "User tapped the Add button");
                 Log.d("M01_Calculator ADD BUTTON", "button =>"+addButton.toString());
-                Log.d("M01_Calculator ADD BUTTON", "button =>"+addButton.getText());
+                //Log.d("M01_Calculator ADD BUTTON", "button =>"+addButton.getText());
                 Log.d("M01_Calculator ADD BUTTON", "button =>"+addButton.getId());
 
                 Double d1 = 0.0;
@@ -54,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button subtractButton = (Button) findViewById(R.id.b_Subtract);
+        ImageButton subtractButton = (ImageButton) findViewById(R.id.minusImageButton);
         subtractButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("M01_Calculator SUBTRACT BUTTON", "User tapped the Add button");
                 Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+subtractButton.toString());
-                Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+subtractButton.getText());
+                //Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+subtractButton.getText());
                 Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+subtractButton.getId());
 
                 Double d1 = 0.0;
@@ -88,12 +90,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button multiplyButton = (Button) findViewById(R.id.b_Multiply);
+        //Button multiplyButton = (Button) findViewById(R.id.b_Multiply);
+        ImageButton multiplyButton = (ImageButton) findViewById(R.id.multiplyImageButton);
         multiplyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("M01_Calculator MULTIPLY BUTTON", "User tapped the Add button");
                 Log.d("M01_Calculator MULTIPLY BUTTON", "button =>"+multiplyButton.toString());
-                Log.d("M01_Calculator MULTIPLY BUTTON", "button =>"+multiplyButton.getText());
+                //Log.d("M01_Calculator MULTIPLY BUTTON", "button =>"+multiplyButton.getText());
                 Log.d("M01_Calculator MULTIPLY BUTTON", "button =>"+multiplyButton.getId());
 
                 Double d1 = 0.0;
@@ -122,12 +125,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button divideButton = (Button) findViewById(R.id.b_Divide);
+        ImageButton divideButton = (ImageButton) findViewById(R.id.divideImageButton);
         divideButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("M01_Calculator SUBTRACT BUTTON", "User tapped the Add button");
                 Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+divideButton.toString());
-                Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+divideButton.getText());
+                //Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+divideButton.getText());
                 Log.d("M01_Calculator SUBTRACT BUTTON", "button =>"+divideButton.getId());
 
                 Double d1 = 0.0;
