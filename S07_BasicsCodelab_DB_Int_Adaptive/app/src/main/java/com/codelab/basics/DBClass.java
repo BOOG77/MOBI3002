@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
  */
 public class DBClass extends SQLiteOpenHelper implements DB_Interface {
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "pokeDB.db";
 
     // If you change the database schema, you must increment the database version.
@@ -34,9 +34,10 @@ public class DBClass extends SQLiteOpenHelper implements DB_Interface {
     private static final String _COL_2 = "Description";
     private static final String _COL_3 = "Level";
     private static final String _COL_4 = "accessCount";
+    private static final String _COL_5 = "id";
 
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "(PokeName TEXT, Level INTEGER, Description TEXT, accessCount INTEGER, id INTEGER)";
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(PokeName TEXT, Level INTEGER, Description TEXT, accessCount INTEGER, id INTEGER)";
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
@@ -102,7 +103,7 @@ public class DBClass extends SQLiteOpenHelper implements DB_Interface {
         values.put(_COL_2, dataModel.getDescription());
         values.put(_COL_3, dataModel.getLevel());
         values.put(_COL_4, dataModel.getAccessCount());
-        values.put(_COL_4, dataModel.getId());
+        values.put(_COL_5, dataModel.getId());
 
         // 3. insert
         db.insert(TABLE_NAME, // table
@@ -177,12 +178,14 @@ public class DBClass extends SQLiteOpenHelper implements DB_Interface {
                 // This code puts a dataModel object into the PlaceHolder for the fragment
                 // if you had more columns in the DB, you'd format  them in the non-details
                 // list here
-                item = new DataModel(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4));
+                item = new DataModel(cursor.getString(0), cursor.getString(2), cursor.getInt(1), cursor.getInt(3), cursor.getLong(4));
                 temp.add(item);
             } while (cursor.moveToNext());
         }
 
         Log.v("DBClass", "findAll=> " + temp.toString());
+        cursor.close();
+        db.close();
 
         // return all
         return temp;

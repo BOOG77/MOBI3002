@@ -252,7 +252,7 @@ private fun CardContent(
             { Text(text = "Details ${pos}") }
             Text(
                 // Just the name of this record
-                text = name.modelName,
+                text = name.pokeName,
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.ExtraBold
                 )
@@ -260,6 +260,7 @@ private fun CardContent(
             if (expanded) {
                 Text(
                     text = (name.toString())  // Full toString of data
+                    //text = "${name.accessCount}"
                 )
                 Log.d("CodeLab_DB", "Expanded name = ${name.toString()} ")
             }

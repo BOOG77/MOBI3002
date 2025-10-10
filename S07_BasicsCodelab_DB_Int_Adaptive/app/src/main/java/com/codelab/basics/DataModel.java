@@ -100,5 +100,4 @@ public class DataModel {
     public void setModelNumber(Integer modelNumber) {
         this.Level = modelNumber;
     }
-
 }
