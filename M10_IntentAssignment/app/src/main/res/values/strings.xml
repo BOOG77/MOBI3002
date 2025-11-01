@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">M10_Intent_01</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_send">Send to Activity</string>
+    <string name="button_text_intent">Send text Intent to who-ever</string>
+    <string name="button_web_intent">Send URL Intent to Browser</string>
+    <string name="button_get_photo_intent">Get Photo</string>
+    <string name="title_activity_display_message">My Message</string>
+</resources>
