@@ -28,7 +28,6 @@ import com.example.m10_intents.DrawingClass;
 
 import java.io.IOException;
 
-// MainActivity: Handles UI setup, permissions, and image import intent.
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1001;
