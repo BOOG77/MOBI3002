@@ -13,28 +13,25 @@ import java.util.Random;
 public class Ball {
 
     float radius = 50;      // Ball's radius
-
-    public int getColor() {
-        return color;
-    }
-
     int color;
     float x;                // Ball's center (x,y)
     float y;
     float speedX;           // Ball's speed
     float speedY;
+    String name;
     private RectF bounds;   // Needed for Canvas.drawOval
 
     public String getName() {
         return name;
     }
 
+    public int getColor() {
+        return color;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
-
-    String name;
-
 
     public Paint getPaint() {
         return paint;

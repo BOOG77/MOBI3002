@@ -3,9 +3,7 @@ package com.example.m03_bounce;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import androidx.test.core.app.ApplicationProvider;
@@ -15,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,7 +57,13 @@ public class DawsonsDbTests {
         List<DataModel> all = dbClass.findAll();
         DataModel testedData = all.get(0);
 
-        if(testedData.getId() == 1 && testedData.getModelX() == 100.0 && testedData.getModelY() == 100.0 && testedData.getModelDX() == 5.0 && testedData.getModelDY() == 5.0 && testedData.getColor() == Color.RED && Objects.equals(testedData.getName(), "Suzy")){
+        if(testedData.getId() == 1 &&
+                testedData.getModelX() == 100.0 &&
+                testedData.getModelY() == 100.0 &&
+                testedData.getModelDX() == 5.0 &&
+                testedData.getModelDY() == 5.0 &&
+                testedData.getColor() == Color.RED &&
+                Objects.equals(testedData.getName(), "Suzy")){
             assertTrue("Save worked", true);
         }else{
             fail("Save didn't work");
