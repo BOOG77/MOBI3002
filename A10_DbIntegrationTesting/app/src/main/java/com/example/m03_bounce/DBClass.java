@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Random;
 
 
-/**
- * Created by w0091766 on 4/29/2016.
- */
 public class DBClass extends SQLiteOpenHelper implements DB_Interface {
 
     public static final int DATABASE_VERSION = 8;

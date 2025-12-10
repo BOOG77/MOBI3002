@@ -17,16 +17,15 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class) // https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/runner#java
 public class DawsonsDbTests {
+    // this is a class to test all of our implemented DB functions that are used in the app itself
+    // update, deleteById, and getNameById are not going to be implemented, so we won't test them
 
     private DBClass dbClass;
     private SQLiteDatabase db;
-    private static final String TABLE_NAME = "tempTable";
-    private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    "X FLOAT, Y FLOAT, DX FLOAT, DY FLOAT, color INTEGER, name TEXT NOT NULL)";
 
     // https://developer.android.com/training/data-storage/room/testing-db
     // ^ test and debug your database android source
@@ -35,145 +34,137 @@ public class DawsonsDbTests {
         Context context = ApplicationProvider.getApplicationContext();
         dbClass = new DBClass(context);
         db = dbClass.getWritableDatabase();
+
+        DataModel dataModel = new DataModel(1, 100F, 100F, 5F, 5F, Color.RED, "Suzy");
+        dbClass.save(dataModel);
     }
 
     @After
     public void closeDb() throws IOException {
+        dbClass.emptyTable();
         db.close();
     }
 
     @Test
-    public void testingCreatingTable(){
-        db.execSQL(SQL_CREATE_TABLE);
+    public void testingCount(){
+        // db has one ball inside of it by default
+        List<DataModel> all = dbClass.findAll();
 
-        // https://tableplus.com/blog/2018/04/sqlite-check-whether-a-table-exists.html
-        // ^ how to query if a table exists
-        String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + TABLE_NAME + "'";
+        // count the db items, it should add to one
+        int count = dbClass.count();
+        assertEquals(1, count);
+    }
 
-        // try to query the table, if it fails then an exception will be thrown that will make the test fail.
-        try{
-            Cursor cursor = db.rawQuery(query, null);
-            assertTrue("Table was created", true);
-            cursor.close();
-        } catch (Exception e) {
-            fail("Table wasnt created");
+    @Test
+    public void testingSave(){
+        List<DataModel> all = dbClass.findAll();
+        DataModel testedData = all.get(0);
+
+        if(testedData.getId() == 1 && testedData.getModelX() == 100.0 && testedData.getModelY() == 100.0 && testedData.getModelDX() == 5.0 && testedData.getModelDY() == 5.0 && testedData.getColor() == Color.RED && Objects.equals(testedData.getName(), "Suzy")){
+            assertTrue("Save worked", true);
+        }else{
+            fail("Save didn't work");
         }
     }
 
     @Test
     public void testingFindAll(){
-        db.execSQL(SQL_CREATE_TABLE);
-        List<DataModel> temp = new ArrayList<DataModel>();
+        List<DataModel> all = dbClass.findAll();
 
-        String query = "SELECT  * FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-
-        DataModel item;
-        if (cursor.moveToFirst()) {
-            do {
-                item = new DataModel(cursor.getInt(0), cursor.getFloat(1), cursor.getFloat(2), cursor.getFloat(3), cursor.getFloat(4), cursor.getInt(5), cursor.getString(6) );
-                temp.add(item);
-            } while (cursor.moveToNext());
-        }
-
-        if(!temp.isEmpty()){ // if temp list isnt empty. (it would be empty if the cursor failed to add items to the list)
-            assertTrue("List was populated, meaning findAll works", true);
+        if(all.isEmpty()){
+            fail("findAll found nothing");
         }else{
-            fail("List wasnt populated, meaning findAll isnt working");
+            assertTrue("findAll is working", true);
         }
-        cursor.close();
-    }
-
-    @Test
-    public void testingSave(){
-        db.execSQL(SQL_CREATE_TABLE);
-
-        DataModel dataModel = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Dawson");
-
-        ContentValues values = new ContentValues();
-        values.put("X", dataModel.getModelX());
-        values.put("Y", dataModel.getModelY());
-        values.put("DX", dataModel.getModelDX());
-        values.put("DY", dataModel.getModelDY());
-        values.put("color", dataModel.getColor());
-        values.put("name", dataModel.getName());
-
-        try {
-            //db.close(); the switch to make it fail on purpose
-            db.insert(TABLE_NAME, null, values);
-            assertTrue("Insert command succeeded", true);
-        } catch (Exception e) {
-            fail("Insert command failed, db didnt save");
-        }
-    }
-
-    @Test
-    public void testingSaveList(){
-        db.execSQL(SQL_CREATE_TABLE);
-        // make a list with three datamodels
-        List<DataModel> dataList = new ArrayList<>();
-        DataModel dataOne = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Dawson");
-        DataModel dataTwo = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Suzy");
-        DataModel dataThree = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Alfred");
-
-        dataList.add(dataOne);
-        dataList.add(dataTwo);
-        dataList.add(dataThree);
-
-        // add them to the db
-        for(DataModel dataModel : dataList){
-            ContentValues values = new ContentValues();
-            values.put("X", dataModel.getModelX());
-            values.put("Y", dataModel.getModelY());
-            values.put("DX", dataModel.getModelDX());
-            values.put("DY", dataModel.getModelDY());
-            values.put("color", dataModel.getColor());
-            values.put("name", dataModel.getName());
-
-            db.insert(TABLE_NAME, null, values);
-        }
-
-        // count the lines of the db to make sure its 3
-        String query = "SELECT * FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-        int lineCount = 0;
-        while(cursor.moveToNext()){
-            lineCount++;
-        }
-        cursor.close();
-
-        assertEquals(3, lineCount);
-    }
-
-    @Test
-    public void testingEmptyTable(){
-        db.execSQL(SQL_CREATE_TABLE);
-
-        DataModel dataModel = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Dawson");
-        ContentValues values = new ContentValues();
-        values.put("X", dataModel.getModelX());
-        values.put("Y", dataModel.getModelY());
-        values.put("DX", dataModel.getModelDX());
-        values.put("DY", dataModel.getModelDY());
-        values.put("color", dataModel.getColor());
-        values.put("name", dataModel.getName());
-
-        db.insert(TABLE_NAME, null, values); // comment this line to make the first test fail
-        
-        String query = "SELECT * FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-
-        if(!cursor.moveToNext()){
-            fail("Empty Table method wasn't tested, the test failed because the DB wasnt populated");
-        }
-
-        db.execSQL("DELETE FROM " + TABLE_NAME); // comment this line to make the second part of the test fail
-        cursor = db.rawQuery(query, null); // gotta refresh the cursor with the updated db info
-        if(!cursor.moveToNext()){
-            assertTrue("DB was cleared, test successful", true);
-        }else{
-            fail("DB wasn't cleared");
-        }
-        cursor.close();
     }
 }
+// these are my tests that i threw away
+// i had to revise them to meet the assignment requirements, but they could be useful so i'll keep them down here
+
+//    @Test
+//    public void testingCreatingTable(){
+//        db.execSQL(SQL_CREATE_TABLE);
+//
+//        // https://tableplus.com/blog/2018/04/sqlite-check-whether-a-table-exists.html
+//        // ^ how to query if a table exists
+//        String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + TABLE_NAME + "'";
+//
+//        // try to query the table, if it fails then an exception will be thrown that will make the test fail.
+//        try{
+//            Cursor cursor = db.rawQuery(query, null);
+//            assertTrue("Table was created", true);
+//            cursor.close();
+//        } catch (Exception e) {
+//            fail("Table wasnt created");
+//        }
+//    }
+//
+//    @Test
+//    public void testingSaveList(){
+//        db.execSQL(SQL_CREATE_TABLE);
+//        // make a list with three datamodels
+//        List<DataModel> dataList = new ArrayList<>();
+//        DataModel dataOne = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Dawson");
+//        DataModel dataTwo = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Suzy");
+//        DataModel dataThree = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Alfred");
+//
+//        dataList.add(dataOne);
+//        dataList.add(dataTwo);
+//        dataList.add(dataThree);
+//
+//        // add them to the db
+//        for(DataModel dataModel : dataList){
+//            ContentValues values = new ContentValues();
+//            values.put("X", dataModel.getModelX());
+//            values.put("Y", dataModel.getModelY());
+//            values.put("DX", dataModel.getModelDX());
+//            values.put("DY", dataModel.getModelDY());
+//            values.put("color", dataModel.getColor());
+//            values.put("name", dataModel.getName());
+//
+//            db.insert(TABLE_NAME, null, values);
+//        }
+//
+//        // count the lines of the db to make sure its 3
+//        String query = "SELECT * FROM " + TABLE_NAME;
+//        Cursor cursor = db.rawQuery(query, null);
+//        int lineCount = 0;
+//        while(cursor.moveToNext()){
+//            lineCount++;
+//        }
+//        cursor.close();
+//
+//        assertEquals(3, lineCount);
+//    }
+//
+//    @Test
+//    public void testingEmptyTable(){
+//        db.execSQL(SQL_CREATE_TABLE);
+//
+//        DataModel dataModel = new DataModel(0, 100F, 100F, 5F, 5F, Color.RED, "Dawson");
+//        ContentValues values = new ContentValues();
+//        values.put("X", dataModel.getModelX());
+//        values.put("Y", dataModel.getModelY());
+//        values.put("DX", dataModel.getModelDX());
+//        values.put("DY", dataModel.getModelDY());
+//        values.put("color", dataModel.getColor());
+//        values.put("name", dataModel.getName());
+//
+//        db.insert(TABLE_NAME, null, values); // comment this line to make the first test fail
+//
+//        String query = "SELECT * FROM " + TABLE_NAME;
+//        Cursor cursor = db.rawQuery(query, null);
+//
+//        if(!cursor.moveToNext()){
+//            fail("Empty Table method wasn't tested, the test failed because the DB wasnt populated");
+//        }
+//
+//        db.execSQL("DELETE FROM " + TABLE_NAME); // comment this line to make the second part of the test fail
+//        cursor = db.rawQuery(query, null); // gotta refresh the cursor with the updated db info
+//        if(!cursor.moveToNext()){
+//            assertTrue("DB was cleared, test successful", true);
+//        }else{
+//            fail("DB wasn't cleared");
+//        }
+//        cursor.close();
+//    }

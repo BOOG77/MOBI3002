@@ -16,9 +16,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5019c2dd-f1b2-4156-b637-afe2af5aaef4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../M05_pokeAppLatestWorking/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../M05_pokeAppLatestWorking/build.gradle.kts" afterDir="false" />
-    </list>
+    <list default="true" id="5019c2dd-f1b2-4156-b637-afe2af5aaef4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +25,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=F:\Users\dawso\.android\avd\Pixel_7a.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=F:\Users\dawso\.android\avd\Medium_Phone.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -63,7 +61,10 @@
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/School/Android Development/MOBI Github Final/MOBI3002/A10_DbBallTesting"
+    "last_opened_file_path": "D:/School/Android Development/MOBI Github Final/MOBI3002/A10_DbBallTesting",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RunManager">
